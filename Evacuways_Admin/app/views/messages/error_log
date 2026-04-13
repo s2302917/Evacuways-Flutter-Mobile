@@ -1,0 +1,4 @@
+[13-Mar-2026 10:29:37 UTC] PHP Fatal error:  Uncaught Error: Class "MessageController" not found in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/messages/messages.php:6
+Stack trace:
+#0 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/messages/messages.php on line 6

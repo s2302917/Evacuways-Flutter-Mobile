@@ -1,0 +1,31 @@
+[10-Mar-2026 06:37:59 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'name' in 'INSERT INTO' in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/CenterModel.php:16
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/CenterModel.php(16): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/CenterController.php(41): CenterModel->create()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/centers/centers.php(8): CenterController->handleRequest()
+#3 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/CenterModel.php on line 16
+[10-Mar-2026 06:40:49 UTC] PHP Warning:  Undefined array key "center_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/CenterController.php on line 42
+[10-Mar-2026 06:40:49 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'center_name' cannot be null in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/CenterModel.php:16
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/CenterModel.php(16): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/CenterController.php(41): CenterModel->create()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/centers/centers.php(8): CenterController->handleRequest()
+#3 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/CenterModel.php on line 16
+[10-Mar-2026 06:41:50 UTC] PHP Warning:  Undefined array key "center_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/CenterController.php on line 42
+[10-Mar-2026 06:41:50 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'center_name' cannot be null in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/CenterModel.php:16
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/CenterModel.php(16): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/CenterController.php(41): CenterModel->create()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/centers/centers.php(8): CenterController->handleRequest()
+#3 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/CenterModel.php on line 16
+[10-Mar-2026 06:44:14 UTC] PHP Warning:  Undefined array key "center_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/CenterController.php on line 42
+[10-Mar-2026 06:44:14 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'center_name' cannot be null in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/CenterModel.php:16
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/CenterModel.php(16): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/CenterController.php(41): CenterModel->create()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/centers/centers.php(8): CenterController->handleRequest()
+#3 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/CenterModel.php on line 16

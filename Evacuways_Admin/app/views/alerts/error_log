@@ -1,0 +1,211 @@
+[06-Mar-2026 11:11:44 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 105
+[06-Mar-2026 11:13:02 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 105
+[06-Mar-2026 11:13:06 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 105
+[06-Mar-2026 11:13:19 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 105
+[06-Mar-2026 11:13:40 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 105
+[06-Mar-2026 11:14:09 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 105
+[06-Mar-2026 11:15:20 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 105
+[06-Mar-2026 11:16:12 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 114
+[06-Mar-2026 11:17:23 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 114
+[06-Mar-2026 11:18:59 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 114
+[06-Mar-2026 11:27:00 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 114
+[06-Mar-2026 11:27:17 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 114
+[06-Mar-2026 11:28:25 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 114
+[06-Mar-2026 11:34:25 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 114
+[06-Mar-2026 13:33:49 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 114
+[06-Mar-2026 13:51:28 UTC] PHP Warning:  Undefined array key "id" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 114
+[06-Mar-2026 14:45:52 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/AlertModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 2
+[06-Mar-2026 14:45:52 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/AlertModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php:2
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(5): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 2
+[06-Mar-2026 14:56:39 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/AlertModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 2
+[06-Mar-2026 14:56:39 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/AlertModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php:2
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(5): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 2
+[09-Mar-2026 14:11:02 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/AlertModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 2
+[09-Mar-2026 14:11:02 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/AlertModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php:2
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(5): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 2
+[09-Mar-2026 14:26:52 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/AlertModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 2
+[09-Mar-2026 14:26:52 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/AlertModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php:2
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(5): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 2
+[09-Mar-2026 14:31:10 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method Database::getConnection() in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php:15
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(6): AlertController->__construct()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 15
+[09-Mar-2026 14:31:12 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method Database::getConnection() in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php:15
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(6): AlertController->__construct()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 15
+[09-Mar-2026 14:31:13 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method Database::getConnection() in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php:15
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(6): AlertController->__construct()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 15
+[09-Mar-2026 14:33:09 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 109
+[09-Mar-2026 14:47:23 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method AlertController::getTypeStats() in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 18
+[09-Mar-2026 16:12:18 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`GoDaddy_3C`.`evacuways_alerts`, CONSTRAINT `evacuways_alerts_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `evacuways_cities` (`city_id`)) in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:59
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(59): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(70): AlertModel->create()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(9): AlertController->handleRequest()
+#3 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 59
+[09-Mar-2026 16:13:36 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`GoDaddy_3C`.`evacuways_alerts`, CONSTRAINT `evacuways_alerts_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `evacuways_cities` (`city_id`)) in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:59
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(59): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(74): AlertModel->create()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(9): AlertController->handleRequest()
+#3 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 59
+[09-Mar-2026 16:18:09 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`GoDaddy_3C`.`evacuways_alerts`, CONSTRAINT `evacuways_alerts_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `evacuways_cities` (`city_id`)) in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:59
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(59): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(74): AlertModel->create()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(10): AlertController->handleRequest()
+#3 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 59
+[09-Mar-2026 16:21:16 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`GoDaddy_3C`.`evacuways_alerts`, CONSTRAINT `evacuways_alerts_ibfk_3` FOREIGN KEY (`barangay_id`) REFERENCES `evacuways_barangays` (`barangay_id`)) in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:83
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(83): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(80): AlertModel->create()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(10): AlertController->handleRequest()
+#3 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 83
+[09-Mar-2026 16:22:06 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'barangay_code' in 'WHERE' in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:37
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(37): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(80): AlertModel->resolveBarangayId()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(80): AlertModel->create()
+#3 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(10): AlertController->handleRequest()
+#4 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 37
+[09-Mar-2026 16:35:48 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'city_code' in 'WHERE' in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:20
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(20): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(79): AlertModel->resolveCityId()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(102): AlertModel->create()
+#3 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(10): AlertController->handleRequest()
+#4 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 20
+[09-Mar-2026 16:45:25 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'city_code' in 'WHERE' in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:21
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(21): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(104): AlertModel->resolveCityId()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(103): AlertModel->update()
+#3 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(10): AlertController->handleRequest()
+#4 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 21
+[09-Mar-2026 16:48:21 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`GoDaddy_3C`.`evacuways_alerts`, CONSTRAINT `evacuways_alerts_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `evacuways_cities` (`city_id`)) in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:133
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(133): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(103): AlertModel->update()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(10): AlertController->handleRequest()
+#3 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 133
+[09-Mar-2026 16:54:19 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'city_code' in 'WHERE' in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:31
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(31): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(114): AlertModel->resolveCityId()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(103): AlertModel->update()
+#3 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(10): AlertController->handleRequest()
+#4 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 31
+[09-Mar-2026 16:55:56 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method AlertModel::resolveBarangayId() in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:70
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(103): AlertModel->update()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(10): AlertController->handleRequest()
+#2 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 70
+[09-Mar-2026 16:55:59 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method AlertModel::resolveBarangayId() in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:70
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(103): AlertModel->update()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(10): AlertController->handleRequest()
+#2 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 70
+[09-Mar-2026 17:26:24 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.barangay_code' in 'SELECT' in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:54
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(54): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(20): AlertModel->getAll()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(13): AlertController->index()
+#3 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 54
+[09-Mar-2026 17:30:49 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method AlertModel::getAlertsPerMonth() in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php:27
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(14): AlertController->getMonthlyStats()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 27
+[09-Mar-2026 17:31:53 UTC] PHP Warning:  Undefined array key "alert_type" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 52
+[09-Mar-2026 17:31:53 UTC] PHP Warning:  Undefined array key "total" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 53
+[09-Mar-2026 17:31:53 UTC] PHP Warning:  Undefined array key "alert_type" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 52
+[09-Mar-2026 17:31:53 UTC] PHP Warning:  Undefined array key "total" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 53
+[09-Mar-2026 17:50:12 UTC] PHP Warning:  Undefined array key "barangay_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 116
+[09-Mar-2026 17:50:34 UTC] PHP Warning:  Undefined array key "barangay_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 116
+[09-Mar-2026 17:51:17 UTC] PHP Warning:  Undefined array key "barangay_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 118
+[09-Mar-2026 17:52:18 UTC] PHP Warning:  Undefined array key "barangay_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 118
+[09-Mar-2026 18:01:36 UTC] PHP Warning:  Undefined array key "barangay_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 118
+[09-Mar-2026 18:02:09 UTC] PHP Warning:  Undefined array key "barangay_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 101
+[09-Mar-2026 18:11:35 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method AlertModel::getAlertsPerMonth() in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php:30
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(14): AlertController->getMonthlyStats()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 30
+[09-Mar-2026 18:12:55 UTC] PHP Fatal error:  Uncaught Error: Class "AlertController" not found in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 7
+[09-Mar-2026 18:14:26 UTC] PHP Fatal error:  Uncaught Error: Class "AlertController" not found in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 7
+[09-Mar-2026 18:14:28 UTC] PHP Fatal error:  Uncaught Error: Class "AlertController" not found in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 7
+[09-Mar-2026 18:15:11 UTC] PHP Fatal error:  Uncaught Error: Class "AlertController" not found in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php on line 7
+[09-Mar-2026 18:16:50 UTC] PHP Warning:  Undefined array key "barangay_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 118
+[09-Mar-2026 18:18:32 UTC] PHP Warning:  Undefined array key "barangay_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 118
+[09-Mar-2026 18:22:24 UTC] PHP Warning:  Undefined array key "barangay_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 118
+[09-Mar-2026 18:22:35 UTC] PHP Warning:  Undefined array key "barangay_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 118
+[09-Mar-2026 18:24:31 UTC] PHP Warning:  Undefined array key "barangay_name" in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php on line 118
+[09-Mar-2026 18:26:46 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`GoDaddy_3C`.`evacuways_barangays`, CONSTRAINT `evacuways_barangays_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `evacuways_cities` (`city_id`)) in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:28
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(28): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(82): AlertModel->resolveAndSyncBarangay()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(115): AlertModel->update()
+#3 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(10): AlertController->handleRequest()
+#4 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 28
+[09-Mar-2026 18:27:32 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`GoDaddy_3C`.`evacuways_barangays`, CONSTRAINT `evacuways_barangays_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `evacuways_cities` (`city_id`)) in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:28
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(28): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(82): AlertModel->resolveAndSyncBarangay()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(115): AlertModel->update()
+#3 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(10): AlertController->handleRequest()
+#4 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 28
+[09-Mar-2026 18:27:34 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`GoDaddy_3C`.`evacuways_barangays`, CONSTRAINT `evacuways_barangays_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `evacuways_cities` (`city_id`)) in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php:28
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(28): PDOStatement->execute()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php(82): AlertModel->resolveAndSyncBarangay()
+#2 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/AlertController.php(115): AlertModel->update()
+#3 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/alerts/alerts.php(10): AlertController->handleRequest()
+#4 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/models/AlertModel.php on line 28

@@ -1,0 +1,460 @@
+/* =========================================
+    1. GOOGLE FONT & VARIABLES
+========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #fd626c;
+  --primary-variant: #e54d57;
+  --success: #4caf50;
+  --danger: #ef5350;
+  --warning: #ffa726;
+  --info: #29b6f6;
+
+  --bg: #f4f6f9;
+  --card-bg: #ffffff;
+  --text: #1f2937;
+  --text-light: #6b7280;
+  --border: #e5e7eb;
+
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --radius: 16px;
+  --radius-sm: 8px;
+  --transition: 0.3s ease;
+}
+
+/* DARK MODE SELECTOR */
+body.dark-theme-variables {
+  --bg: #121212;
+  --card-bg: #1e1e2f;
+  --text: #f5f5f5;
+  --text-light: #a1a1aa;
+  --border: #333;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================================
+    2. GLOBAL RESET
+========================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: background var(--transition), color var(--transition), border var(--transition);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+h1 { font-size: 1.8rem; margin-bottom: 0.8rem; font-weight: 700; }
+h2 { font-size: 1.4rem; margin-bottom: 1rem; }
+h3 { font-size: 0.9rem; color: var(--text-light); text-transform: uppercase; }
+a { text-decoration: none; color: inherit; }
+img { width: 100%; display: block; }
+
+/* =========================================
+    3. UTILITY CLASSES (New!)
+========================================= */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-muted { color: var(--text-light); }
+.icon-sm { font-size: 14px; vertical-align: middle; }
+.mb-1 { margin-bottom: 1rem; }
+
+/* =========================================
+    4. HOMEPAGE SPECIFIC DESIGN
+========================================= */
+.home-page-body { background: var(--bg); }
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 8%;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.main-nav .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 700;
+}
+
+.main-nav .logo h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 700;
+    font-size: 2.4rem;
+    margin-top: 20px;
+}
+
+.main-nav .logo img { width: 3.5rem; }
+
+.nav-links { display: flex; align-items: center; gap: 2rem; }
+.nav-links a { font-weight: 500; color: var(--text-light); transition: var(--transition); }
+.nav-links a:hover { color: var(--primary); }
+
+.btn-login-accent {
+    background: var(--primary);
+    color: white !important;
+    padding: 0.7rem 1.8rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(253, 98, 108, 0.3);
+}
+
+.btn-login-accent:hover {
+    transform: translateY(-2px);
+    background: var(--primary-variant);
+}
+
+/* Hero Section */
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8rem 8% 5rem;
+    gap: 4rem;
+    min-height: 80vh;
+}
+
+.hero-content h1 { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 1.5rem; }
+.hero-content h1 span { color: var(--primary); }
+.hero-content p { margin-bottom: 2.5rem; color: var(--text-light); font-size: 1.1rem; max-width: 550px; line-height: 1.7; }
+
+.hero-img img { max-width: 600px; border-radius: var(--radius); filter: drop-shadow(0 20px 40px rgba(0,0,0,0.1)); }
+
+/* Home Feature Cards */
+.home-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 4rem 8% 8rem;
+}
+
+.feature-item {
+    background: var(--card-bg);
+    padding: 3rem 2rem;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.feature-item:hover { transform: translateY(-10px); }
+.feature-item span { font-size: 3.5rem; color: var(--primary); margin-bottom: 1.5rem; display: block; }
+.feature-item h3 { color: var(--text); text-transform: none; font-size: 1.3rem; margin-bottom: 1rem; }
+
+/* =========================================
+    5. DASHBOARD LAYOUT & SIDEBAR
+========================================= */
+.container {
+  display: grid;
+  width: 96%;
+  margin: 0 auto;
+  gap: 1.8rem;
+  grid-template-columns: 14rem auto 23rem;
+  padding-top: 1.2rem;
+}
+
+aside .top { display: flex; align-items: center; justify-content: space-between; margin-top: 1.4rem; }
+aside .logo { display: flex; gap: 0.8rem; align-items: center; }
+aside .logo img { width: 2.5rem; height: 2.5rem; }
+aside .close { display: none; }
+
+/* =========================================
+    FIXED DASHBOARD SIDEBAR
+========================================= */
+.sidebar { 
+    display: flex; 
+    flex-direction: column; 
+    height: 86vh; 
+    position: relative; 
+    top: 3rem; 
+}
+
+.sidebar a {
+    display: flex;
+    color: var(--text-light);
+    margin-left: 2rem;
+    gap: 1rem;
+    align-items: center;
+    position: relative;
+    height: 3.7rem;
+    transition: all 300ms ease;
+}
+
+.sidebar a:last-child { 
+    position: relative; 
+    bottom: 0; 
+    margin-top: 0;
+    margin-bottom: 2rem; 
+}
+
+.sidebar a:last-child::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 80%;
+    height: 1px;
+    background: var(--border);
+}
+
+.sidebar a.active {
+  background: var(--primary);
+  color: white;
+  margin-left: 0;
+  border-radius: var(--radius);
+  padding-left: 1rem;
+}
+
+.sidebar a.active span { margin-left: calc(1rem - 3px); }
+.sidebar a:hover { color: var(--primary); }
+.sidebar a:hover span { margin-left: 1rem; }
+
+/* =========================================
+    6. DASHBOARD MAIN CONTENT
+========================================= */
+main { margin-top: 1.4rem; }
+
+.insights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+.insights > div {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  margin-top: 1rem;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.insights > div:hover { box-shadow: none; transform: translateY(-5px); }
+.insights > div span { background: var(--primary); padding: 0.5rem; border-radius: 50%; color: white; font-size: 2rem; }
+
+/* =========================================
+    7. TABLES
+========================================= */
+.recent_alerts { margin-top: 2rem; }
+
+table {
+  background: var(--card-bg);
+  width: 100%;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  text-align: left;
+  box-shadow: var(--shadow);
+  border-spacing: 0;
+}
+
+table:hover { box-shadow: none; }
+tbody td { height: 3.8rem; border-bottom: 1px solid var(--border); color: var(--text-light); padding: 0 1rem; }
+tbody tr:last-child td { border: none; }
+thead th { color: var(--text); padding: 1rem; border-bottom: 1px solid var(--border); }
+
+/* Table specific utilities */
+.table-actions { display: flex; justify-content: center; gap: 10px; align-items: center; height: 100%; padding: 1.2rem 0; }
+.btn-icon { background: none; border: none; cursor: pointer; transition: var(--transition); display: flex; align-items: center; }
+.btn-icon.edit { color: var(--info); }
+.btn-icon.edit:hover { color: #0288d1; }
+.btn-icon.delete { color: var(--danger); }
+.btn-icon.delete:hover { color: #c62828; }
+.empty-table { text-align: center; padding: 2rem !important; }
+.subtitle { color: var(--text-light); font-size: 0.85rem; display: block; margin-top: 0.3rem;}
+
+/* Dynamic Status Colors */
+.danger { color: var(--danger) !important; font-weight: 600; }
+.warning { color: var(--warning) !important; font-weight: 600; }
+.info { color: var(--info) !important; font-weight: 600; }
+.success { color: var(--success) !important; font-weight: 600; }
+
+/* =========================================
+    8. RIGHT PANEL & STATS
+========================================= */
+.right { margin-top: 1.4rem; }
+.right .top { display: flex; justify-content: flex-end; gap: 2rem; }
+
+#menu_bar { display: none; }
+
+.theme-toggler {
+    background: var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 1.6rem;
+    width: 4.2rem;
+    cursor: pointer;
+    border-radius: 0.4rem;
+}
+
+.theme-toggler span { font-size: 1.2rem; width: 50%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.theme-toggler span.active { background: var(--primary); color: white; border-radius: 0.4rem; }
+
+.statistics { margin-top: 2rem; background: var(--card-bg); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); }
+.stat { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.7rem; padding: 1rem; border-radius: var(--radius); background: var(--bg); }
+.stat span { padding: 0.6rem; color: white; border-radius: 50%; background: var(--primary); font-size: 1.8rem; }
+
+/* =========================================
+    9. DASHBOARD VISUALS (MAP & CHARTS)
+========================================= */
+#userMap {
+    height: 350px;
+    width: 100%;
+    border-radius: var(--radius);
+    margin-top: 1rem;
+    z-index: 1;
+}
+
+.charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; margin-top: 2rem; }
+
+.chart-box, .chart-container-full, .chart-container {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.chart-box { position: relative; height: 320px; width: 100%; }
+.chart-box canvas { max-width: 100%; max-height: 240px; }
+.chart-container-full { margin-top: 2rem; }
+
+/* Right Sidebar Chart Containers */
+.chart-container { margin-top: 1.5rem; }
+.chart-container h3 { margin-bottom: 1rem; font-size: 1.1rem; color: var(--text); text-transform: none; }
+
+/* Custom box override for right panel */
+.custom-chart-box { padding: 1rem; margin-top: 2rem; }
+
+/* =========================================
+    10. RESPONSIVE
+========================================= */
+@media screen and (max-width: 1200px) {
+  .container { grid-template-columns: 7rem auto 23rem; }
+  .sidebar h3 { display: none; }
+  .sidebar a { width: 5.6rem; }
+  .insights { grid-template-columns: 1fr; }
+  .charts-grid { grid-template-columns: 1fr; }
+}
+
+@media screen and (max-width: 768px) {
+  .container { grid-template-columns: 1fr; width: 94%; }
+  aside {
+    position: fixed;
+    left: -100%;
+    background: var(--card-bg);
+    width: 18rem;
+    z-index: 3;
+    box-shadow: 1rem 3rem 4rem var(--border);
+    height: 100vh;
+    transition: all 400ms ease;
+  }
+  aside.active { left: 0; }
+  aside .close { display: inline-block; cursor: pointer; }
+  #menu_bar { display: inline-block; cursor: pointer; }
+}
+
+/* =========================================
+    11. FORMS & INPUTS
+========================================= */
+.form-container {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+.form-container h3 {
+    margin-bottom: 1.2rem;
+    font-size: 1.2rem;
+    color: var(--text);
+    text-transform: none;
+}
+
+.form-group-wrapper { display: grid; gap: 1rem; }
+.grid-3-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.input-box p {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.input-box input,
+.input-box textarea,
+.input-box select {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.input-box textarea { resize: vertical; min-height: 80px; }
+.input-box input:focus, .input-box textarea:focus, .input-box select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* =========================================
+    12. MODALS & BUTTONS
+========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: none; /* Controlled by JS */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    animation: fadeInDown 0.4s ease;
+}
+
+.btn-submit {
+    background: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    transition: var(--transition);
+}
+
+.btn-submit:hover {
+    background: var(--primary-variant);
+    transform: translateY(-2px);
+}
+
+.btn-cancel {
+    background: var(--text-light);
+    margin-top: 5px;
+}
+
+.btn-cancel:hover { background: #4b5563; }

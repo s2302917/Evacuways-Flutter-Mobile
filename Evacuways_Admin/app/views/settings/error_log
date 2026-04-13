@@ -1,0 +1,5 @@
+[16-Mar-2026 10:28:26 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/settings/../config/database.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/settings/settings.php on line 10
+[16-Mar-2026 10:28:26 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/settings/../config/database.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/settings/settings.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/views/settings/settings.php on line 10

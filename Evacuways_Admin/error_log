@@ -1,0 +1,130 @@
+[06-Mar-2026 10:27:14 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../core/Database.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:27:14 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../core/Database.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php:3
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php(3): require_once()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(9): require_once('/home/cd4ddgymu...')
+#2 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:27:16 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../core/Database.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:27:16 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../core/Database.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php:3
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php(3): require_once()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(9): require_once('/home/cd4ddgymu...')
+#2 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:28:06 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../core/Database.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:28:06 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../core/Database.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php:3
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php(3): require_once()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once('/home/cd4ddgymu...')
+#2 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:31:35 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../config/Database.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:31:35 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../config/Database.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php:3
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php(3): require_once()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once('/home/cd4ddgymu...')
+#2 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:31:37 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../config/Database.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:31:37 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../config/Database.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php:3
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php(3): require_once()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once('/home/cd4ddgymu...')
+#2 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:31:38 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../config/Database.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:31:38 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../config/Database.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php:3
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php(3): require_once()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once('/home/cd4ddgymu...')
+#2 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:31:41 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../config/Database.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:31:41 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../config/Database.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php:3
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php(3): require_once()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once('/home/cd4ddgymu...')
+#2 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:32:15 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../config/Database.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:32:15 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/../config/Database.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php:3
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php(3): require_once()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once('/home/cd4ddgymu...')
+#2 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:32:34 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/app/config/database.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:32:34 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/app/config/database.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php:3
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php(3): require_once()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once('/home/cd4ddgymu...')
+#2 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:32:36 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/app/config/database.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:32:36 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/app/config/database.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php:3
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php(3): require_once()
+#1 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once('/home/cd4ddgymu...')
+#2 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/model/AlertModel.php on line 3
+[06-Mar-2026 10:33:47 UTC] PHP Warning:  require_once(app/model/VehicleModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 4
+[06-Mar-2026 10:33:47 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'app/model/VehicleModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php:4
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 4
+[06-Mar-2026 10:35:04 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:35:04 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php:5
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:36:07 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:36:07 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php:5
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:36:08 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:36:08 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php:5
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:36:09 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:36:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php:5
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:36:22 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:36:22 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php:5
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:36:32 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:36:32 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php:5
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:39:10 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:39:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php:5
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:41:27 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:41:27 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php:5
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:41:29 UTC] PHP Warning:  require_once(/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php): Failed to open stream: No such file or directory in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
+[06-Mar-2026 10:41:29 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/../model/VehicleModel.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php:5
+Stack trace:
+#0 /home/cd4ddgymub7j/public_html/Evacuways_Admin/index.php(12): require_once()
+#1 {main}
+  thrown in /home/cd4ddgymub7j/public_html/Evacuways_Admin/app/controllers/DashboardController.php on line 5
