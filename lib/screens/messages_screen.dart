@@ -170,9 +170,15 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       addImportant('volunteers', Icons.volunteer_activism, Colors.green, 'user');
                       addImportant('drivers', Icons.local_shipping, Colors.blue, 'user');
 
-                      return ListView(
-                        padding: const EdgeInsets.only(bottom: 100),
-                        children: [
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          await resourceController.fetchMessages();
+                          await resourceController.fetchContacts();
+                        },
+                        child: ListView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.only(bottom: 100),
+                          children: [
                           // INBOX big label
                           Padding(
                             padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
@@ -264,6 +270,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             ),
                           )),
                         ],
+                      ),
                       );
                     },
                   ),

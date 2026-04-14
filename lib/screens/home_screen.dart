@@ -298,7 +298,13 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            CustomScrollView(
+            RefreshIndicator(
+              onRefresh: () async {
+                await resourceController.fetchAlerts();
+                await resourceController.fetchSosRequests();
+              },
+              child: CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
                 // App Bar
                 SliverToBoxAdapter(
@@ -670,6 +676,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // Bottom FAB spacing
                 const SliverToBoxAdapter(child: SizedBox(height: 100)),
               ],
+            ),
             ),
 
             // SOS FAB

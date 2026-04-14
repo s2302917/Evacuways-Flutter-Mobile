@@ -7,7 +7,7 @@ $data = json_decode(file_get_contents("php://input"));
 
 // Map credentials from input
 $contact_number = isset($data->contact_number) ? htmlspecialchars(strip_tags($data->contact_number)) : null;
-$password_input = isset($data->password) ? htmlspecialchars(strip_tags($data->password)) : null;
+$password_input = isset($data->password) ? trim((string)$data->password) : null;
 
 // Basic validation
 if(empty($contact_number) || empty($password_input)){

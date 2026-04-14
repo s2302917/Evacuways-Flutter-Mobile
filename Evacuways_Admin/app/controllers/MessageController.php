@@ -40,21 +40,27 @@ class MessageController {
 
                 if (isset($_FILES['chat_image']) && $_FILES['chat_image']['error'] === UPLOAD_ERR_OK) {
                     $fileTmpPath = $_FILES['chat_image']['tmp_name'];
-                    $fileName = $_FILES['chat_image']['name'];
-                    $fileType = mime_content_type($fileTmpPath);
+                    $fileName    = $_FILES['chat_image']['name'];
+                    $fileType    = mime_content_type($fileTmpPath);
 
-                    if ($fileType === 'image/jpeg' || $fileType === 'image/jpg') {
-                        $uploadDir = __DIR__ . '/../../public/uploads/messages/';
-                        
+                    $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+
+                    if (in_array($fileType, $allowedTypes)) {
+                        // Upload to the SAME folder as the Flutter mobile app so both sides
+                        // can read each other's images through the shared Evacuways URL.
+                        $uploadDir = __DIR__ . '/../../../public_html/Evacuways/uploads/messages/';
+
                         if (!is_dir($uploadDir)) {
                             mkdir($uploadDir, 0777, true);
                         }
 
                         $newFileName = time() . '_' . basename($fileName);
-                        $destPath = $uploadDir . $newFileName;
+                        $destPath    = $uploadDir . $newFileName;
 
                         if (move_uploaded_file($fileTmpPath, $destPath)) {
-                            $imagePath = $newFileName;
+                            // Store the same path format the mobile API uses:
+                            // "uploads/messages/<filename>" — resolved against the Evacuways base URL.
+                            $imagePath = 'uploads/messages/' . $newFileName;
                         }
                     } else {
                         $this->redirect("messages.php?user_id=$receiverId&error=invalid_file");

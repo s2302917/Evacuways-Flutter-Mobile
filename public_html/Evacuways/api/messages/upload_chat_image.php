@@ -2,8 +2,8 @@
 require_once '../config/headers.php';
 require_once '../config/database.php';
 
-// Set upload directory
-$target_dir = "../../uploads/chat/";
+// Set upload directory — shared with admin panel so both sides can see each other's images
+$target_dir = "../../uploads/messages/";
 if (!file_exists($target_dir)) {
     mkdir($target_dir, 0777, true);
 }
@@ -11,16 +11,15 @@ if (!file_exists($target_dir)) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
     $file_name = time() . "_" . basename($_FILES["image"]["name"]);
     $target_file = $target_dir . $file_name;
-    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-    // Check if image file is a actual image or fake image
+    // Check if image file is an actual image or fake image
     $check = getimagesize($_FILES["image"]["tmp_name"]);
     if($check !== false) {
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
             echo json_encode([
                 "success" => true,
-                "message" => "The file ". htmlspecialchars($file_name) . " has been uploaded.",
-                "image_path" => "uploads/chat/" . $file_name
+                "message" => "The file " . htmlspecialchars($file_name) . " has been uploaded.",
+                "image_path" => "uploads/messages/" . $file_name
             ]);
         } else {
             http_response_code(500);
@@ -35,3 +34,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
     echo json_encode(["success" => false, "message" => "No image file provided."]);
 }
 ?>
+

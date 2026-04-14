@@ -64,7 +64,8 @@ try {
     $first_name = htmlspecialchars(strip_tags($data->first_name));
     $last_name = htmlspecialchars(strip_tags($data->last_name));
     $role = !empty($data->role) ? htmlspecialchars(strip_tags($data->role)) : 'user';
-    $password = htmlspecialchars(strip_tags($data->password));
+    $raw_password = trim((string)($data->password ?? ''));
+    $password = password_hash($raw_password, PASSWORD_DEFAULT);
     $contact_number = htmlspecialchars(strip_tags($data->contact_number));
 
     $stmt->bindParam(":first_name", $first_name);

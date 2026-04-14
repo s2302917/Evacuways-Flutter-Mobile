@@ -85,7 +85,7 @@ foreach ($contacts as $contact) {
 
         <?php if(isset($_GET['error']) && $_GET['error'] == 'invalid_file'): ?>
             <div style="color: var(--color-danger, red); padding: 1rem; background: #ffe6e6; border-radius: 5px; margin-top: 1rem;">
-                Error: Only JPEG images are allowed.
+                Error: Only image files (JPEG, PNG, GIF, WebP) are allowed.
             </div>
         <?php endif; ?>
 
@@ -124,7 +124,15 @@ foreach ($contacts as $contact) {
                                 <?php endif; ?>
                                 
                                 <?php if(!empty($msg['image_path'])): ?>
-                                    <img src="../../../public/uploads/messages/<?= htmlspecialchars($msg['image_path']) ?>" alt="Attached Image">
+                                    <?php
+                                        // Build the image URL using the shared Evacuways base URL so the
+                                        // admin and Flutter mobile app both resolve images from the same location.
+                                        $imgPath = htmlspecialchars($msg['image_path']);
+                                        $baseEvacuwaysUrl = 'https://5zu.758.mytemp.website/Evacuways/';
+                                        // image_path is stored as "uploads/messages/filename.jpg"
+                                        $imgUrl = $baseEvacuwaysUrl . $imgPath;
+                                    ?>
+                                    <img src="<?= $imgUrl ?>" alt="Attached Image">
                                 <?php endif; ?>
                                 <small style="display: block; margin-top: 5px; font-size: 0.7rem; opacity: 0.7;">
                                     <?= date('M d, h:i A', strtotime($msg['sent_at'])) ?>
@@ -143,9 +151,9 @@ foreach ($contacts as $contact) {
                         <form action="messages.php" method="POST" enctype="multipart/form-data" style="display: flex; width: 100%; gap: 1rem; align-items: center;">
                             <input type="hidden" name="receiver_id" value="<?= $activeUserId ?>">
                             
-                            <label for="chat_image_upload" class="file-upload-wrapper" title="Attach JPEG">
+                            <label for="chat_image_upload" class="file-upload-wrapper" title="Attach Image">
                                 <span class="material-symbols-sharp text-muted" style="font-size: 2rem;">image</span>
-                                <input type="file" id="chat_image_upload" name="chat_image" accept=".jpg, .jpeg">
+                                <input type="file" id="chat_image_upload" name="chat_image" accept="image/*">
                             </label>
                             
                             <input type="text" name="message_text" placeholder="Type a message..." autocomplete="off">
