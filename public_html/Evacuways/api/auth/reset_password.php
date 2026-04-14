@@ -45,7 +45,7 @@ try {
 
     if ($stmt->rowCount() > 0) {
         // Update password and clear device_token (OTP)
-        $update_query = "UPDATE evacuways_users SET password = :password, device_token = NULL WHERE contact_number = :f1 OR contact_number = :f2 OR contact_number = :f3";
+        $update_query = "UPDATE evacuways_users SET password_hash = :password, device_token = NULL WHERE contact_number = :f1 OR contact_number = :f2 OR contact_number = :f3";
         $update_stmt = $conn->prepare($update_query);
         $update_stmt->bindParam(":password", $data->new_password);
         $update_stmt->bindParam(":f1", $f1);

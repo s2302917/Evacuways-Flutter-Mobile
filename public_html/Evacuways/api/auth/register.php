@@ -49,7 +49,7 @@ try {
     }
 
     $query = "INSERT INTO evacuways_users (
-                first_name, last_name, role, password, gender, birth_date,
+                first_name, last_name, role, password_hash, gender, birth_date,
                 contact_number, region_code, city_code, barangay_code, 
                 latitude, longitude, created_at
               ) VALUES (
