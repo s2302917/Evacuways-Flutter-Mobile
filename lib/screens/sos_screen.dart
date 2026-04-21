@@ -177,7 +177,7 @@ class _SOSScreenState extends State<SOSScreen>
   }
 
   Future<void> _triggerQuickSOS() async {
-    if (resourceController.isSOSLoading) return;
+    if (resourceController.isSOSSubmittingNotifier.value) return;
 
     if (!await _checkLocationStatus()) return;
 
@@ -530,15 +530,15 @@ class _SOSScreenState extends State<SOSScreen>
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: ListenableBuilder(
-                  listenable: resourceController,
-                  builder: (context, _) => ElevatedButton.icon(
-                    onPressed: resourceController.isSOSLoading ? null : _submitSOS,
-                    icon: resourceController.isSOSLoading
+                child: ValueListenableBuilder<bool>(
+                  valueListenable: resourceController.isSOSSubmittingNotifier,
+                  builder: (context, isLoading, _) => ElevatedButton.icon(
+                    onPressed: isLoading ? null : _submitSOS,
+                    icon: isLoading
                         ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                         : const Icon(Icons.send, color: Colors.white),
                     label: Text(
-                      resourceController.isSOSLoading ? 'Submitting...' : 'Submit Request',
+                      isLoading ? 'Submitting...' : 'Submit Request',
                       style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -578,10 +578,10 @@ class _SOSScreenState extends State<SOSScreen>
                       child: Text('My SOS History',
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
                     ),
-                    ListenableBuilder(
-                      listenable: resourceController,
-                      builder: (ctx, _) => GestureDetector(
-                        onTap: resourceController.isSosHistoryLoading ? null : resourceController.fetchSosRequests,
+                    ValueListenableBuilder<bool>(
+                      valueListenable: resourceController.isSosLoadingNotifier,
+                      builder: (ctx, isLoading, _) => GestureDetector(
+                        onTap: isLoading ? null : resourceController.fetchSosRequests,
                         child: const Icon(Icons.refresh, size: 20, color: AppColors.primary),
                       ),
                     ),
@@ -590,41 +590,46 @@ class _SOSScreenState extends State<SOSScreen>
               ),
             ),
 
-            ListenableBuilder(
-              listenable: resourceController,
-              builder: (context, _) {
-                if (resourceController.isSosHistoryLoading) {
-                  return const SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.all(24),
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                  );
-                }
-                if (resourceController.sosRequests.isEmpty) {
-                  return const SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(24, 0, 24, 40),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Icon(Icons.history_toggle_off, size: 40, color: AppColors.textHint),
-                            SizedBox(height: 8),
-                            Text('No SOS requests yet.', style: TextStyle(color: AppColors.textSecondary)),
-                          ],
+            ValueListenableBuilder<List<SosRequestModel>>(
+              valueListenable: resourceController.sosNotifier,
+              builder: (context, sosList, _) {
+                return ValueListenableBuilder<bool>(
+                  valueListenable: resourceController.isSosLoadingNotifier,
+                  builder: (context, isLoading, _) {
+                    if (isLoading && sosList.isEmpty) {
+                      return const SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.all(24),
+                          child: Center(child: CircularProgressIndicator()),
                         ),
+                      );
+                    }
+                    if (sosList.isEmpty) {
+                      return const SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(24, 0, 24, 40),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Icon(Icons.history_toggle_off, size: 40, color: AppColors.textHint),
+                                SizedBox(height: 8),
+                                Text('No SOS requests yet.', style: TextStyle(color: AppColors.textSecondary)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (ctx, i) {
+                          final req = sosList[i];
+                          return _SOSHistoryCard(request: req, onCancel: () => _cancelRequest(req));
+                        },
+                        childCount: sosList.length,
                       ),
-                    ),
-                  );
-                }
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (ctx, i) {
-                      final req = resourceController.sosRequests[i];
-                      return _SOSHistoryCard(request: req, onCancel: () => _cancelRequest(req));
-                    },
-                    childCount: resourceController.sosRequests.length,
-                  ),
+                    );
+                  },
                 );
               },
             ),

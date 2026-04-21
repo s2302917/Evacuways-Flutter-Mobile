@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
+import '../services/polling_service.dart';
 import 'home_screen.dart';
 import 'checklist_screen.dart';
 import 'map_screen.dart';
@@ -13,13 +14,34 @@ class MainShell extends StatefulWidget {
   State<MainShell> createState() => _MainShellState();
 }
 
-class _MainShellState extends State<MainShell> {
+class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
   late int _currentIndex;
 
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
+    WidgetsBinding.instance.addObserver(this);
+    // Start centralized polling when app shell mounts
+    pollingService.start();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    pollingService.stop();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Pause polling when app goes to background, resume when foregrounded
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      pollingService.stop();
+    } else if (state == AppLifecycleState.resumed) {
+      pollingService.start();
+    }
   }
 
   final List<Widget> _screens = const [
@@ -119,7 +141,8 @@ class _NavItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               decoration: isActive
                   ? BoxDecoration(
                       color: AppColors.primary.withValues(alpha: 0.1),

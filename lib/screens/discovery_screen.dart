@@ -49,20 +49,21 @@ class _DiscoveryScreenState extends State<DiscoveryScreen> with SingleTickerProv
           ],
         ),
       ),
-      body: ListenableBuilder(
-        listenable: resourceController,
-        builder: (context, _) {
-          if (resourceController.isContactsLoading) {
+      body: ValueListenableBuilder<Map<String, List<Map<String, dynamic>>>>(
+        valueListenable: resourceController.contactsNotifier,
+        builder: (context, contacts, _) {
+          final isEmpty = contacts.values.every((v) => v.isEmpty);
+          if (isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
 
           return TabBarView(
             controller: _tabController,
             children: [
-              _buildContactList(resourceController.contacts['personnel'] ?? []),
-              _buildContactList(resourceController.contacts['drivers'] ?? []),
-              _buildContactList(resourceController.contacts['volunteers'] ?? []),
-              _buildContactList(resourceController.contacts['community'] ?? []),
+              _buildContactList(contacts['personnel'] ?? []),
+              _buildContactList(contacts['drivers'] ?? []),
+              _buildContactList(contacts['volunteers'] ?? []),
+              _buildContactList(contacts['community'] ?? []),
             ],
           );
         },
