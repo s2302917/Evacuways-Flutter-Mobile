@@ -32,6 +32,8 @@ try {
     $missing_count = $data['missing_count'] ?? 0;
     $assigned_vehicle_id = $data['assigned_vehicle_id'] ?? null;
     $assigned_center_id = $data['assigned_center_id'] ?? null;
+    $latitude = $data['latitude'] ?? null;
+    $longitude = $data['longitude'] ?? null;
     
     $query = "UPDATE evacuways_users SET 
               first_name = :first_name,
@@ -49,7 +51,9 @@ try {
               is_family = :is_family,
               missing_count = :missing_count,
               assigned_vehicle_id = :assigned_vehicle_id,
-              assigned_center_id = :assigned_center_id
+              assigned_center_id = :assigned_center_id,
+              latitude = :latitude,
+              longitude = :longitude
               WHERE user_id = :user_id";
     
     $stmt = $conn->prepare($query);
@@ -70,6 +74,8 @@ try {
     $stmt->bindParam(':missing_count', $missing_count);
     $stmt->bindParam(':assigned_vehicle_id', $assigned_vehicle_id);
     $stmt->bindParam(':assigned_center_id', $assigned_center_id);
+    $stmt->bindParam(':latitude', $latitude);
+    $stmt->bindParam(':longitude', $longitude);
     
     if($stmt->execute()) {
         http_response_code(200);

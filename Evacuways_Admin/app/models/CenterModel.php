@@ -7,10 +7,10 @@ class CenterModel {
         $this->conn = $db;
     }
 
-    public function create($center_name, $capacity, $barangay_name, $status, $contact_person, $contact_number) {
+    public function create($center_name, $capacity, $barangay_name, $status, $contact_person, $contact_number, $latitude = null, $longitude = null) {
         $query = "INSERT INTO " . $this->table . " 
-                  (center_name, capacity, barangay_name, status, contact_person, contact_number) 
-                  VALUES (:center_name, :capacity, :barangay_name, :status, :contact_person, :contact_number)";
+                  (center_name, capacity, barangay_name, status, contact_person, contact_number, latitude, longitude) 
+                  VALUES (:center_name, :capacity, :barangay_name, :status, :contact_person, :contact_number, :latitude, :longitude)";
         
         $stmt = $this->conn->prepare($query);
         return $stmt->execute([
@@ -19,18 +19,22 @@ class CenterModel {
             ':barangay_name' => $barangay_name,
             ':status' => $status,
             ':contact_person' => $contact_person,
-            ':contact_number' => $contact_number
+            ':contact_number' => $contact_number,
+            ':latitude' => $latitude,
+            ':longitude' => $longitude
         ]);
     }
 
-    public function update($id, $center_name, $capacity, $barangay_name, $status, $contact_person, $contact_number) {
+    public function update($id, $center_name, $capacity, $barangay_name, $status, $contact_person, $contact_number, $latitude = null, $longitude = null) {
         $query = "UPDATE " . $this->table . " 
                   SET center_name = :center_name, 
                       capacity = :capacity, 
                       barangay_name = :barangay_name, 
                       status = :status,
                       contact_person = :contact_person,
-                      contact_number = :contact_number
+                      contact_number = :contact_number,
+                      latitude = :latitude,
+                      longitude = :longitude
                   WHERE center_id = :id";
         
         $stmt = $this->conn->prepare($query);
@@ -41,7 +45,9 @@ class CenterModel {
             ':barangay_name' => $barangay_name,
             ':status' => $status,
             ':contact_person' => $contact_person,
-            ':contact_number' => $contact_number
+            ':contact_number' => $contact_number,
+            ':latitude' => $latitude,
+            ':longitude' => $longitude
         ]);
     }
 

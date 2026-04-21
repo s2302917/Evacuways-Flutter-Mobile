@@ -59,6 +59,9 @@ class _ChatScreenState extends State<ChatScreen> {
       otherUserId: widget.otherUserId,
       otherUserType: widget.receiverType,
     );
+    if (widget.otherUserId != null) {
+      resourceController.markAsRead(widget.otherUserId!, otherUserType: widget.receiverType);
+    }
     if (!silent) _scrollToBottom();
   }
 
@@ -380,15 +383,15 @@ class _ChatScreenState extends State<ChatScreen> {
               child: ListenableBuilder(
                 listenable: resourceController,
                 builder: (context, _) {
-                  if (resourceController.isMessagesLoading && resourceController.messages.isEmpty) {
+                  if (resourceController.isMessagesLoading && resourceController.chatMessages.isEmpty) {
                     return const Center(child: CircularProgressIndicator());
                   }
                   return ListView.builder(
                     controller: _scrollController,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    itemCount: resourceController.messages.length,
+                    itemCount: resourceController.chatMessages.length,
                     itemBuilder: (context, i) {
-                      final msg = resourceController.messages[i];
+                      final msg = resourceController.chatMessages[i];
                       return _buildMessage(msg);
                     },
                   );
@@ -452,9 +455,17 @@ class _ChatScreenState extends State<ChatScreen> {
     Color bubbleColor = isMe ? AppColors.primary : _getRoleColor(msg.senderRole);
 
     if (msg.imagePath != null && msg.imagePath!.isNotEmpty) {
-      String fullImagePath = msg.imagePath!.startsWith('http')
-          ? msg.imagePath!
-          : 'https://5zu.758.mytemp.website/Evacuways/${msg.imagePath}';
+      String path = msg.imagePath!;
+      String baseUrl = 'https://5zu.758.mytemp.website/Evacuways';
+      String fullImagePath;
+
+      if (path.startsWith('http')) {
+        fullImagePath = path;
+      } else {
+        // Ensure accurate path joining to prevent "Evacuwaysuploads/..." errors or double slashes
+        String cleanPath = path.startsWith('/') ? path.substring(1) : path;
+        fullImagePath = '$baseUrl/$cleanPath';
+      }
 
       return Align(
         alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,

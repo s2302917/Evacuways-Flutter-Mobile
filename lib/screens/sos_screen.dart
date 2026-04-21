@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../controllers/resource_controller.dart';
 import '../models/sos_request_model.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SOSScreen extends StatefulWidget {
   const SOSScreen({super.key});
@@ -86,23 +88,122 @@ class _SOSScreenState extends State<SOSScreen>
     });
   }
 
-  Future<void> _triggerQuickSOS() async {
-    setState(() {
-      _isHolding = false;
-      _holdProgress = 0;
-    });
-    bool success = await resourceController.submitSOS(
-      requestType: 'Emergency SOS',
-      subject: 'QUICK SOS — Immediate Assistance Required',
-      message: 'User activated the Quick SOS button. Immediate assistance needed.',
+  Future<bool> _checkLocationStatus() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      if (mounted) {
+        _showResultDialog(
+          "Location services are disabled. Please enable GPS in your device settings to send an SOS with your coordinates.",
+          title: "Location Service Off",
+        );
+      }
+      return false;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        if (mounted) {
+          _showResultDialog(
+            "Location permissions are denied. We need your location to help responders find you.",
+            title: "Permission Denied",
+          );
+        }
+        return false;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      if (mounted) {
+        _showResultDialog(
+          "Location permissions are permanently denied. Please enable them in your app settings to use SOS tracking.",
+          title: "Permission Required",
+        );
+      }
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<LatLng?> _showLocationPicker() async {
+    LatLng currentCenter = const LatLng(10.7202, 122.5621); // Default
+    try {
+      Position pos = await Geolocator.getCurrentPosition();
+      currentCenter = LatLng(pos.latitude, pos.longitude);
+    } catch (_) {}
+
+    return await showDialog<LatLng>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) {
+        LatLng selected = currentCenter;
+        return StatefulBuilder(
+          builder: (context, setDialogState) => AlertDialog(
+            title: const Text('Pin Your Location', style: TextStyle(fontWeight: FontWeight.w800)),
+            content: SizedBox(
+              width: double.maxFinite,
+              height: 300,
+              child: Stack(
+                children: [
+                  GoogleMap(
+                    initialCameraPosition: CameraPosition(target: currentCenter, zoom: 16),
+                    onMapCreated: (ctrl) {},
+                    onCameraMove: (pos) => selected = pos.target,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                  ),
+                  const Center(child: Icon(Icons.location_on, color: Colors.red, size: 40)),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('CANCEL')),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(ctx, selected),
+                style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
+                child: const Text('CONFIRM PIN', style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          ),
+        );
+      },
     );
+  }
+
+  Future<void> _triggerQuickSOS() async {
+    if (resourceController.isSOSLoading) return;
+
+    if (!await _checkLocationStatus()) return;
+
+    // 1. Show location picker
+    final pinned = await _showLocationPicker();
+    if (pinned == null) return;
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Sending Quick SOS with pinned location...')),
+      );
+    }
+
+    // 2. Submit SOS with pinned location
+    String? error = await resourceController.submitSOS(
+      requestType: 'Emergency Support', // Standardized type
+      subject: 'QUICK SOS - Immediate Rescue Required',
+      message: 'User activated Quick SOS hold-button and pinned their specific location.',
+      latitude: pinned.latitude,
+      longitude: pinned.longitude,
+    );
+
     if (mounted) {
       _showResultDialog(
-        success,
-        title: success ? '🚨 SOS Sent!' : 'Failed',
-        body: success
-            ? 'Emergency responders have been notified immediately.'
-            : 'Could not send SOS. Check your connection and try again.',
+        error,
+        title: error == null ? '🚨 SOS Sent!' : 'SOS Failed',
       );
     }
   }
@@ -116,39 +217,46 @@ class _SOSScreenState extends State<SOSScreen>
       return;
     }
 
-    bool success = await resourceController.submitSOS(
+    // Request permissions before sending
+    if (!await _checkLocationStatus()) return;
+
+    String? error = await resourceController.submitSOS(
       requestType: _selectedNeeds.join(', '),
       subject: 'SOS Emergency: ${_selectedNeeds.first}',
       message: _messageController.text.trim(),
     );
 
     if (mounted) {
-      if (success) {
+      if (error == null) {
         _messageController.clear();
         _showResultDialog(
-          true,
+          null,
           title: 'SOS Sent!',
-          body: 'Your request has been shared with emergency responders.',
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to submit SOS. Please try again.')),
+        _showResultDialog(
+          error,
+          title: 'Failed to Send',
         );
       }
     }
   }
 
-  void _showResultDialog(bool success, {required String title, required String body}) {
+  void _showResultDialog(String? errorMessage, {required String title}) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w800)),
-        content: Text(body),
+        content: Text(
+          errorMessage ?? 'Emergency responders have been notified immediately.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('OK', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700)),
+            child: const Text('OK',
+                style: TextStyle(
+                    color: AppColors.primary, fontWeight: FontWeight.w700)),
           ),
         ],
       ),

@@ -7,10 +7,10 @@ class VehicleModel {
         $this->conn = $db;
     }
 
-    public function create($type, $plate, $capacity, $barangay_name, $landmark, $status, $driver_name, $driver_contact) {
+    public function create($type, $plate, $capacity, $barangay_name, $landmark, $status, $driver_name, $driver_contact, $latitude = null, $longitude = null) {
         $query = "INSERT INTO " . $this->table . " 
-                  (vehicle_type, plate_number, capacity, barangay_name, landmark, status, driver_name, driver_contact) 
-                  VALUES (:type, :plate, :capacity, :barangay_name, :landmark, :status, :driver_name, :driver_contact)";
+                  (vehicle_type, plate_number, capacity, barangay_name, landmark, status, driver_name, driver_contact, latitude, longitude) 
+                  VALUES (:type, :plate, :capacity, :barangay_name, :landmark, :status, :driver_name, :driver_contact, :latitude, :longitude)";
         
         $stmt = $this->conn->prepare($query);
         return $stmt->execute([
@@ -21,11 +21,13 @@ class VehicleModel {
             ':landmark' => $landmark,
             ':status' => $status,
             ':driver_name' => $driver_name,
-            ':driver_contact' => $driver_contact
+            ':driver_contact' => $driver_contact,
+            ':latitude' => $latitude,
+            ':longitude' => $longitude
         ]);
     }
 
-    public function update($id, $type, $plate, $capacity, $barangay_name, $landmark, $status, $driver_name, $driver_contact) {
+    public function update($id, $type, $plate, $capacity, $barangay_name, $landmark, $status, $driver_name, $driver_contact, $latitude = null, $longitude = null) {
         $query = "UPDATE " . $this->table . " 
                   SET vehicle_type = :type, 
                       plate_number = :plate, 
@@ -34,7 +36,9 @@ class VehicleModel {
                       landmark = :landmark,
                       status = :status,
                       driver_name = :driver_name,
-                      driver_contact = :driver_contact
+                      driver_contact = :driver_contact,
+                      latitude = :latitude,
+                      longitude = :longitude
                   WHERE vehicle_id = :id";
         
         $stmt = $this->conn->prepare($query);
@@ -47,7 +51,9 @@ class VehicleModel {
             ':landmark' => $landmark,
             ':status' => $status,
             ':driver_name' => $driver_name,
-            ':driver_contact' => $driver_contact
+            ':driver_contact' => $driver_contact,
+            ':latitude' => $latitude,
+            ':longitude' => $longitude
         ]);
     }
 

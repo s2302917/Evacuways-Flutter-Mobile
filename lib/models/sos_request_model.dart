@@ -7,6 +7,9 @@ class SosRequestModel {
   final String status;
   final DateTime createdAt;
 
+  final double? latitude;
+  final double? longitude;
+
   SosRequestModel({
     required this.requestId,
     this.userId,
@@ -15,6 +18,8 @@ class SosRequestModel {
     this.requestType,
     required this.status,
     required this.createdAt,
+    this.latitude,
+    this.longitude,
   });
 
   factory SosRequestModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +31,8 @@ class SosRequestModel {
       requestType: json['request_type'],
       status: json['status'] ?? 'Pending',
       createdAt: DateTime.tryParse(json['created_at'] ?? '') ?? DateTime.now(),
+      latitude: json['latitude'] != null ? double.tryParse(json['latitude'].toString()) : null,
+      longitude: json['longitude'] != null ? double.tryParse(json['longitude'].toString()) : null,
     );
   }
 

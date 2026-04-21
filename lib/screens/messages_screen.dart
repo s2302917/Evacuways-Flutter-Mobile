@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../models/message_model.dart';
@@ -12,11 +13,28 @@ class MessagesScreen extends StatefulWidget {
 }
 
 class _MessagesScreenState extends State<MessagesScreen> {
+  Timer? _refreshTimer;
+  final Set<String> _dismissedKeys = {};
+
   @override
   void initState() {
     super.initState();
     resourceController.fetchMessages();
     resourceController.fetchContacts();
+    
+    // Polling for inbox updates every 10 seconds
+    _refreshTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      if (mounted) {
+        resourceController.fetchMessages();
+        resourceController.fetchContacts();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _refreshTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -87,7 +105,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     listenable: resourceController,
                     builder: (context, _) {
                       if (resourceController.isMessagesLoading &&
-                          resourceController.messages.isEmpty) {
+                          resourceController.inboxMessages.isEmpty) {
                         return const Center(child: CircularProgressIndicator());
                       }
 
@@ -95,32 +113,40 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       if (user == null) return const SizedBox.shrink();
 
                       // 1. Extract existing threads
-                      final Map<int, MessageModel> lastMessages = {};
-                      for (var m in resourceController.messages) {
-                        int otherId = m.senderId == user.userId ? (m.receiverId ?? 0) : (m.senderId ?? 0);
+                      final Map<String, MessageModel> lastMessages = {};
+                      for (var m in resourceController.inboxMessages) {
+                        final isMe = m.senderId == user.userId;
+                        final otherId = isMe ? (m.receiverId ?? 0) : (m.senderId ?? 0);
+                        final otherType = isMe ? (m.receiverType ?? 'user') : (m.senderType ?? 'user');
                         if (otherId == 0) continue;
-                        if (!lastMessages.containsKey(otherId) || 
-                            m.sentAt.isAfter(lastMessages[otherId]!.sentAt)) {
-                          lastMessages[otherId] = m;
+
+                        final key = "${otherId}_$otherType";
+                        if (!lastMessages.containsKey(key) || 
+                            m.sentAt.isAfter(lastMessages[key]!.sentAt)) {
+                          lastMessages[key] = m;
                         }
                       }
 
                       // 2. Prepare unified list
                       final List<_ConvoData> inboxItems = [];
-                      final Set<int> processedPartnerIds = {};
+                      final Set<String> processedPartnerKeys = {};
 
                       // Add active threads
-                      for (var otherId in lastMessages.keys) {
-                        final msg = lastMessages[otherId]!;
-                        // Determine partner type from message data (not tag)
+                      for (var key in lastMessages.keys) {
+                        final msg = lastMessages[key]!;
                         final isCurrentUserSender = msg.senderId == user.userId;
                         final partnerType = isCurrentUserSender
                             ? (msg.receiverType ?? 'user')
                             : (msg.senderType ?? 'user');
+                        final otherId = isCurrentUserSender ? (msg.receiverId ?? 0) : (msg.senderId ?? 0);
                         final partnerName = isCurrentUserSender
                             ? (msg.receiverName ?? 'User $otherId')
                             : (msg.senderName ?? 'User $otherId');
                         final isAdmin = partnerType == 'admin';
+                        
+                        // Messenger feature: Unread status
+                        final isUnread = !msg.isRead && !isCurrentUserSender;
+
                         inboxItems.add(_ConvoData(
                           userId: otherId,
                           receiverType: partnerType,
@@ -129,14 +155,15 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               ? '📷 Photo'
                               : (msg.messageText?.isNotEmpty == true ? msg.messageText! : 'Sent a message'),
                           time: "${msg.sentAt.hour}:${msg.sentAt.minute.toString().padLeft(2, '0')}",
+                          lastInteraction: msg.sentAt,
                           tag: isAdmin ? 'ADMIN' : (msg.senderRole?.toUpperCase() ?? 'USER'),
                           icon: isAdmin ? Icons.admin_panel_settings : Icons.chat_bubble,
                           iconColor: isAdmin ? Colors.red : _getRoleColor(msg.senderRole),
                           iconBg: (isAdmin ? Colors.red : _getRoleColor(msg.senderRole)).withValues(alpha: 0.1),
-                          isUnread: false,
+                          isUnread: isUnread,
                           isCritical: isAdmin,
                         ));
-                        processedPartnerIds.add(otherId);
+                        processedPartnerKeys.add(key);
                       }
 
                       // 3. Add Important Personnel (Admins, Volunteers, Drivers) if not messaged
@@ -144,7 +171,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         final list = resourceController.contacts[category] ?? [];
                         for (var c in list) {
                           int id = int.tryParse(c['user_id'].toString()) ?? 0;
-                          if (!processedPartnerIds.contains(id)) {
+                          final key = "${id}_$rType";
+                          if (!processedPartnerKeys.contains(key)) {
                             // For admins, first_name holds full_name; trim trailing space
                             final rawName = "${c['first_name'] ?? ''} ${c['last_name'] ?? ''}".trim();
                             inboxItems.add(_ConvoData(
@@ -153,6 +181,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               name: rawName.isEmpty ? 'Unknown' : rawName,
                               preview: "Start a conversation...",
                               time: 'Contact',
+                              lastInteraction: DateTime(2000), // Very old for contacts
                               tag: c['role']?.toString().toUpperCase() ?? 'SUPPORT',
                               icon: icon,
                               iconColor: color,
@@ -161,7 +190,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               isCritical: false,
                               isOfficial: true,
                             ));
-                            processedPartnerIds.add(id);
+                            processedPartnerKeys.add(key);
                           }
                         }
                       }
@@ -169,6 +198,15 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       addImportant('admins', Icons.admin_panel_settings, Colors.red, 'admin');
                       addImportant('volunteers', Icons.volunteer_activism, Colors.green, 'user');
                       addImportant('drivers', Icons.local_shipping, Colors.blue, 'user');
+
+                      // 4. Sort: Threads on top (by time), then contacts
+                      inboxItems.sort((a, b) => b.lastInteraction.compareTo(a.lastInteraction));
+
+                      // 5. Filter dismissed items locally to prevent "still in tree" error
+                      inboxItems.removeWhere((item) {
+                        final k = 'convo_${item.userId}_${item.receiverType}';
+                        return _dismissedKeys.contains(k);
+                      });
 
                       return RefreshIndicator(
                         onRefresh: () async {
@@ -206,6 +244,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             ),
 
                           ...inboxItems.map((item) => Dismissible(
+                            // Stable Key: UserID_UserType. Do not include preview text as it changes over time.
                             key: Key('convo_${item.userId}_${item.receiverType}'),
                             direction: DismissDirection.endToStart,
                             confirmDismiss: (_) async {
@@ -228,11 +267,24 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                 ),
                               ) ?? false;
                             },
-                            onDismissed: (_) async {
-                              await resourceController.deleteConversation(
+                            onDismissed: (_) {
+                              final k = 'convo_${item.userId}_${item.receiverType}';
+                              setState(() {
+                                _dismissedKeys.add(k);
+                              });
+                              // Trigger backend deletion
+                              resourceController.deleteConversation(
                                 item.userId,
                                 otherUserType: item.receiverType,
-                              );
+                              ).then((_) {
+                                // Once done, remove from _dismissedKeys so it can "pop up" again 
+                                // if a new message arrives from the API later.
+                                if (mounted) {
+                                  setState(() {
+                                    _dismissedKeys.remove(k);
+                                  });
+                                }
+                              });
                             },
                             background: Container(
                               margin: const EdgeInsets.fromLTRB(20, 0, 20, 12),
@@ -386,6 +438,7 @@ class _ConvoData {
   final int userId;
   final String receiverType;
   final String name, preview, time, tag;
+  final DateTime lastInteraction;
   final IconData icon;
   final Color iconColor, iconBg;
   final bool isUnread, isCritical, isOfficial;
@@ -396,6 +449,7 @@ class _ConvoData {
     required this.name,
     required this.preview,
     required this.time,
+    required this.lastInteraction,
     required this.tag,
     required this.icon,
     required this.iconColor,
@@ -456,10 +510,10 @@ class _ConvoTile extends StatelessWidget {
                     children: [
                       Text(
                         data.name,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
+                          fontWeight: data.isUnread ? FontWeight.w900 : FontWeight.w700,
+                          color: data.isUnread ? AppColors.primary : AppColors.textPrimary,
                         ),
                       ),
                       Text(

@@ -4,6 +4,7 @@ import '../controllers/auth_controller.dart';
 import '../controllers/user_controller.dart';
 import '../models/family_model.dart';
 import '../models/user_model.dart';
+import 'package:geolocator/geolocator.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -42,6 +43,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } finally {
       // Loading complete
     }
+  }
+
+  Future<bool> _checkLocationStatus() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('Location Services Disabled'),
+            content: const Text('Please enable GPS to pin your home location.'),
+            actions: [TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('OK'))],
+          ),
+        );
+      }
+      return false;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permission denied')),
+          );
+        }
+        return false;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Location permissions are permanently denied.')),
+        );
+      }
+      return false;
+    }
+
+    return true;
   }
 
   void _showEditIdentitySheet(UserModel user) {
@@ -117,34 +162,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 onPressed: () async {
-                  // Pre-emptive dismiss dialog context so we can show loading if needed,
-                  // or just wait. We'll close then process.
                   Navigator.pop(sheetContext);
                   setState(() => _isUpdating = true);
 
-                  final updatedUser = user.copyWith(
-                    firstName: firstCtrl.text.trim(),
-                    lastName: lastCtrl.text.trim(),
-                    contactNumber: contactCtrl.text.trim(),
-                  );
+                  try {
+                    final updatedUser = user.copyWith(
+                      firstName: firstCtrl.text.trim(),
+                      lastName: lastCtrl.text.trim(),
+                      contactNumber: contactCtrl.text.trim(),
+                    );
 
-                  final result = await _userController.updateUserProfile(updatedUser);
-                  if (result['success']) {
-                    authController.currentUser = updatedUser;
-                    if (mounted) {
+                    final result = await _userController.updateUserProfile(updatedUser);
+                    
+                    if (!mounted) return;
+
+                    if (result['success']) {
+                      authController.currentUser = updatedUser;
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Profile updated successfully')),
                       );
-                    }
-                  } else {
-                    if (mounted) {
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(result['message'] ?? 'Failed to update profile')),
                       );
                     }
-                  }
-                  if (mounted) {
-                    setState(() => _isUpdating = false);
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error updating profile: $e')),
+                      );
+                    }
+                  } finally {
+                    if (mounted) {
+                      setState(() => _isUpdating = false);
+                    }
                   }
                 },
                 child: const Text('Save Changes', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
@@ -160,6 +211,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _showEditLocationSheet(UserModel user) {
     final cityCtrl = TextEditingController(text: user.cityCode);
     final brgyCtrl = TextEditingController(text: user.barangayCode);
+    double? pinnedLat = user.latitude;
+    double? pinnedLng = user.longitude;
+    bool isLocating = false;
 
     showModalBottomSheet(
       context: context,
@@ -169,88 +223,173 @@ class _ProfileScreenState extends State<ProfileScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (sheetContext) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-            left: 24,
-            right: 24,
-            top: 24,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text(
-                'Update Location',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
-                ),
+        return StatefulBuilder(
+          builder: (sbContext, setSheetState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+                left: 24,
+                right: 24,
+                top: 24,
               ),
-              const SizedBox(height: 24),
-              TextField(
-                controller: cityCtrl,
-                decoration: InputDecoration(
-                  labelText: 'City/Municipality',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    'Update Location',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: brgyCtrl,
-                decoration: InputDecoration(
-                  labelText: 'Barangay',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                  const SizedBox(height: 24),
+                  TextField(
+                    controller: cityCtrl,
+                    decoration: InputDecoration(
+                      labelText: 'City/Municipality',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: brgyCtrl,
+                    decoration: InputDecoration(
+                      labelText: 'Barangay',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
                   ),
-                ),
-                onPressed: () async {
-                  Navigator.pop(sheetContext);
-                  setState(() => _isUpdating = true);
+                  const SizedBox(height: 24),
+                  
+                  // Coordinate display
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: AppColors.inputFill,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.divider),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.location_searching, color: AppColors.primary, size: 20),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Pinned Coordinates',
+                                style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textSecondary),
+                              ),
+                              Text(
+                                pinnedLat != null 
+                                  ? '${pinnedLat!.toStringAsFixed(6)}, ${pinnedLng!.toStringAsFixed(6)}'
+                                  : 'No specific location pinned yet',
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
 
-                  final updatedUser = user.copyWith(
-                    cityCode: cityCtrl.text.trim(),
-                    barangayCode: brgyCtrl.text.trim(),
-                  );
+                  // Pin Button
+                  OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      side: const BorderSide(color: AppColors.primary),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    onPressed: isLocating ? null : () async {
+                      setSheetState(() => isLocating = true);
+                      
+                      if (await _checkLocationStatus()) {
+                        try {
+                          Position position = await Geolocator.getCurrentPosition(
+                            desiredAccuracy: LocationAccuracy.high
+                          );
+                          setSheetState(() {
+                            pinnedLat = position.latitude;
+                            pinnedLng = position.longitude;
+                          });
+                        } catch (e) {
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Error getting location: $e')),
+                            );
+                          }
+                        }
+                      }
+                      
+                      setSheetState(() => isLocating = false);
+                    },
+                    icon: isLocating 
+                      ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                      : const Icon(Icons.my_location, size: 20),
+                    label: Text(isLocating ? 'PINNING...' : 'PIN CURRENT LOCATION'),
+                  ),
 
-                  final result = await _userController.updateUserProfile(updatedUser);
-                  if (result['success']) {
-                    // Update auth controller so everywhere responds
-                    authController.currentUser = updatedUser;
-                    if (mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Location updated successfully')),
-                      );
-                    }
-                  } else {
-                    if (mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(result['message'] ?? 'Failed to update location')),
-                      );
-                    }
-                  }
-                  if (mounted) {
-                    setState(() => _isUpdating = false);
-                  }
-                },
-                child: const Text('Save Changes', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                  const SizedBox(height: 32),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () async {
+                      Navigator.pop(sheetContext);
+                      setState(() => _isUpdating = true);
+
+                      try {
+                        final updatedUser = user.copyWith(
+                          cityCode: cityCtrl.text.trim(),
+                          barangayCode: brgyCtrl.text.trim(),
+                          latitude: pinnedLat,
+                          longitude: pinnedLng,
+                        );
+
+                        final result = await _userController.updateUserProfile(updatedUser);
+                        
+                        if (!mounted) return;
+
+                        if (result['success']) {
+                          authController.currentUser = updatedUser;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Location updated successfully')),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(result['message'] ?? 'Failed to update location')),
+                          );
+                        }
+                      } catch (e) {
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Error updating location: $e')),
+                          );
+                        }
+                      } finally {
+                        if (mounted) {
+                          setState(() => _isUpdating = false);
+                        }
+                      }
+                    },
+                    child: const Text('Save Changes', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                  ),
+                  const SizedBox(height: 24),
+                ],
               ),
-              const SizedBox(height: 24),
-            ],
-          ),
+            );
+          }
         );
       },
     );

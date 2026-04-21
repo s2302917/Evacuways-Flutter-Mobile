@@ -16,12 +16,17 @@ class MapScreen extends StatefulWidget {
   State<MapScreen> createState() => _MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMixin {
   final MapController mapController = MapController();
   final DraggableScrollableController _sheetController =
       DraggableScrollableController();
   GoogleMapController? _googleMapController;
   Set<Marker> _markers = {};
+  Set<Circle> _circles = {};
+
+  // Pulse animation state
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
 
   // Default camera position (Iloilo City)
   static const CameraPosition _initialPosition = CameraPosition(
@@ -38,6 +43,66 @@ class _MapScreenState extends State<MapScreen> {
       );
     }
     _loadData();
+
+    // Pulse animation setup
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat();
+    _pulseAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeOut),
+    )..addListener(() {
+      _updatePulseCircles();
+    });
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    _googleMapController?.dispose();
+    super.dispose();
+  }
+
+  void _updatePulseCircles() {
+    if (mapController.activeSos.isEmpty) {
+      if (_circles.isNotEmpty) {
+        setState(() => _circles = {});
+      }
+      return;
+    }
+
+    final double radius = _pulseAnimation.value * 300; // 300 meters max
+    final double opacity = 1.0 - _pulseAnimation.value;
+
+    final Set<Circle> newCircles = {};
+    for (var sos in mapController.activeSos) {
+      if (sos.latitude != null && sos.longitude != null) {
+        newCircles.add(
+          Circle(
+            circleId: CircleId('sos_pulse_${sos.requestId}'),
+            center: LatLng(sos.latitude!, sos.longitude!),
+            radius: radius,
+            fillColor: Colors.red.withOpacity(opacity * 0.4),
+            strokeColor: Colors.red.withOpacity(opacity * 0.2),
+            strokeWidth: 2,
+          ),
+        );
+        // Smaller secondary ring
+        newCircles.add(
+          Circle(
+            circleId: CircleId('sos_pulse_inner_${sos.requestId}'),
+            center: LatLng(sos.latitude!, sos.longitude!),
+            radius: radius * 0.5,
+            fillColor: Colors.red.withOpacity(opacity * 0.3),
+            strokeWidth: 0,
+          ),
+        );
+      }
+    }
+
+    setState(() {
+      _circles = newCircles;
+    });
   }
 
   Future<void> _loadData() async {
@@ -183,6 +248,39 @@ class _MapScreenState extends State<MapScreen> {
           },
         ),
       );
+    }
+
+    // 4. Active SOS (Emergency Pinpoints)
+    for (var sos in mapController.activeSos) {
+      if (sos.latitude != null && sos.longitude != null) {
+        newMarkers.add(
+          Marker(
+            markerId: MarkerId('sos_${sos.requestId}'),
+            position: LatLng(sos.latitude!, sos.longitude!),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueRed,
+            ),
+            infoWindow: InfoWindow(
+              title: '🚨 EMERGENCY SOS',
+              snippet: '${sos.requestType} - Waiting for rescue',
+            ),
+            onTap: () {
+              _showResourceDetails(
+                title: 'Emergency Help Needed',
+                subtitle: 'Critical Situation',
+                details: {
+                  'Type': sos.requestType ?? 'Unknown',
+                  'Message': sos.message ?? 'No additional details.',
+                  'Status': sos.status,
+                  'Time': '${sos.createdAt.hour}:${sos.createdAt.minute.toString().padLeft(2, "0")}',
+                },
+                lat: sos.latitude!,
+                lng: sos.longitude!,
+              );
+            },
+          ),
+        );
+      }
     }
 
     debugPrint('MAP UPDATING MARKERS: ${newMarkers.length} markers generated');
@@ -637,6 +735,7 @@ class _MapScreenState extends State<MapScreen> {
           GoogleMap(
             initialCameraPosition: _initialPosition,
             markers: _markers,
+            circles: _circles,
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
             zoomControlsEnabled: kIsWeb, // Enable zoom controls on web

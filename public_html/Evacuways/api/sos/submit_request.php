@@ -9,14 +9,16 @@ if (!empty($data->user_id) && !empty($data->request_type)) {
         $database = new Database();
         $db = $database->connect();
 
-        $query = "INSERT INTO evacuways_support_requests (user_id, subject, message, request_type, status) 
-                  VALUES (:user_id, :subject, :message, :request_type, 'Pending')";
+        $query = "INSERT INTO evacuways_support_requests (user_id, subject, message, request_type, status, latitude, longitude) 
+                  VALUES (:user_id, :subject, :message, :request_type, 'Pending', :latitude, :longitude)";
         
         $stmt = $db->prepare($query);
         $stmt->bindParam(':user_id', $data->user_id);
         $stmt->bindParam(':subject', $data->subject);
         $stmt->bindParam(':message', $data->message);
         $stmt->bindParam(':request_type', $data->request_type);
+        $stmt->bindParam(':latitude', $data->latitude);
+        $stmt->bindParam(':longitude', $data->longitude);
 
         if ($stmt->execute()) {
             $newId = $db->lastInsertId();
@@ -27,8 +29,12 @@ if (!empty($data->user_id) && !empty($data->request_type)) {
                 "request_id" => $newId
             ]);
         } else {
+            $errorInfo = $stmt->errorInfo();
             http_response_code(500);
-            echo json_encode(["success" => false, "message" => "Failed to submit request."]);
+            echo json_encode([
+                "success" => false, 
+                "message" => "SQL Error: " . ($errorInfo[2] ?? "Unknown error processing request.")
+            ]);
         }
 
     } catch (PDOException $e) {

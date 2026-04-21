@@ -27,6 +27,10 @@
             <span class="material-symbols-sharp">groups</span><h3>Families</h3>
         </a>
         
+        <a href="/Evacuways_Admin/app/views/checklists/checklists.php">
+            <span class="material-symbols-sharp">assignment_turned_in</span><h3>Safety Checklists</h3>
+        </a>
+        
         <a href="/Evacuways_Admin/app/views/volunteers/volunteers.php">
             <span class="material-symbols-sharp">volunteer_activism</span><h3>Volunteers</h3>
         </a>

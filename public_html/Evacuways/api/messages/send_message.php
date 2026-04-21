@@ -9,8 +9,8 @@ if (!empty($data->sender_id) && !empty($data->receiver_id) && !empty($data->mess
         $database = new Database();
         $db = $database->connect();
 
-        $query = "INSERT INTO evacuways_messages (request_id, sender_type, sender_id, receiver_type, receiver_id, message_text, latitude, longitude, sender_role, image_path) 
-                  VALUES (:request_id, :sender_type, :sender_id, :receiver_type, :receiver_id, :message_text, :latitude, :longitude, :sender_role, :image_path)";
+        $query = "INSERT INTO evacuways_messages (request_id, sender_type, sender_id, receiver_type, receiver_id, message_text, latitude, longitude, sender_role, image_path, is_read) 
+                  VALUES (:request_id, :sender_type, :sender_id, :receiver_type, :receiver_id, :message_text, :latitude, :longitude, :sender_role, :image_path, 0)";
         
         $sender_type = $data->sender_type ?? 'user';
         $receiver_type = $data->receiver_type ?? 'user';

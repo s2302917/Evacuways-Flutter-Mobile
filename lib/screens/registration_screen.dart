@@ -396,7 +396,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             vertical: 14,
                           ),
                           child: const Text(
-                            '+63',
+                            '',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 15,

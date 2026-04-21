@@ -50,7 +50,9 @@ class CenterController {
                 $_POST['barangay_name'],
                 $_POST['status'],
                 $_POST['contact_person'],
-                $_POST['contact_number']
+                $_POST['contact_number'],
+                $_POST['latitude'] ?? null,
+                $_POST['longitude'] ?? null
             );
 
             // Automatically create a user account for the center
@@ -75,7 +77,9 @@ class CenterController {
                 $_POST['barangay_name'],
                 $_POST['status'],
                 $_POST['contact_person'],
-                $_POST['contact_number']
+                $_POST['contact_number'],
+                $_POST['latitude'] ?? null,
+                $_POST['longitude'] ?? null
             );
             $this->redirect('centers.php');
         }

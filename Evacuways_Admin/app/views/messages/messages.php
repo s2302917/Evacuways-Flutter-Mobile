@@ -73,6 +73,7 @@ foreach ($contacts as $contact) {
             <a href="../vechicles/vehicles.php"><span class="material-symbols-sharp">airport_shuttle</span><h3>Evacuation Vehicles</h3></a>
             <a href="../centers/centers.php"><span class="material-symbols-sharp">location_city</span><h3>Evacuation Centers</h3></a>
             <a href="../families/families.php"><span class="material-symbols-sharp">groups</span><h3>Registered Families</h3></a>
+            <a href="../checklists/checklists.php"><span class="material-symbols-sharp">assignment_turned_in</span><h3>Safety Checklists</h3></a>
             <a href="../volunteers/volunteers.php"><span class="material-symbols-sharp">volunteer_activism</span><h3>Volunteers</h3></a>
             <a href="messages.php" class="active"><span class="material-symbols-sharp">mail</span><h3>Messages</h3></a>
             <a href="../settings/settings.php"><span class="material-symbols-sharp">settings</span><h3>Settings</h3></a>
@@ -86,6 +87,12 @@ foreach ($contacts as $contact) {
         <?php if(isset($_GET['error']) && $_GET['error'] == 'invalid_file'): ?>
             <div style="color: var(--color-danger, red); padding: 1rem; background: #ffe6e6; border-radius: 5px; margin-top: 1rem;">
                 Error: Only image files (JPEG, PNG, GIF, WebP) are allowed.
+            </div>
+        <?php endif; ?>
+
+        <?php if(isset($_GET['error']) && $_GET['error'] == 'upload_failed'): ?>
+            <div style="color: var(--color-danger, red); padding: 1rem; background: #ffe6e6; border-radius: 5px; margin-top: 1rem;">
+                Error: Image upload failed. Please try again.
             </div>
         <?php endif; ?>
 
@@ -125,14 +132,30 @@ foreach ($contacts as $contact) {
                                 
                                 <?php if(!empty($msg['image_path'])): ?>
                                     <?php
-                                        // Build the image URL using the shared Evacuways base URL so the
-                                        // admin and Flutter mobile app both resolve images from the same location.
-                                        $imgPath = htmlspecialchars($msg['image_path']);
+                                        $rawPath = $msg['image_path'];
                                         $baseEvacuwaysUrl = 'https://5zu.758.mytemp.website/Evacuways/';
-                                        // image_path is stored as "uploads/messages/filename.jpg"
-                                        $imgUrl = $baseEvacuwaysUrl . $imgPath;
+                                        
+                                        // Smart Path Resolver
+                                        if (strpos($rawPath, 'http') === 0) {
+                                            // Handle absolute URLs
+                                            $imgUrl = $rawPath;
+                                        } elseif (strpos($rawPath, 'uploads/') === 0) {
+                                            // Unified or Legacy Mobile (uploads/messages/ or uploads/chat/)
+                                            // Ensure we don't end up with double slashes if the path starts with a slash
+                                            $cleanPath = ltrim($rawPath, '/');
+                                            $imgUrl = rtrim($baseEvacuwaysUrl, '/') . '/' . $cleanPath;
+                                        } else {
+                                            // Legacy Admin: stored just as "filename.jpg" 
+                                            // Historically these were in the admin's local public/uploads/messages/
+                                            $imgUrl = "../../../public/uploads/messages/" . htmlspecialchars($rawPath);
+                                        }
                                     ?>
-                                    <img src="<?= $imgUrl ?>" alt="Attached Image">
+                                    <div class="image-wrapper" style="margin-top: 5px;">
+                                        <a href="<?= $imgUrl ?>" target="_blank">
+                                            <img src="<?= $imgUrl ?>" alt="Attached Image" 
+                                                 onerror="this.onerror=null; this.src='https://via.placeholder.com/150?text=Image+Not+Found';">
+                                        </a>
+                                    </div>
                                 <?php endif; ?>
                                 <small style="display: block; margin-top: 5px; font-size: 0.7rem; opacity: 0.7;">
                                     <?= date('M d, h:i A', strtotime($msg['sent_at'])) ?>

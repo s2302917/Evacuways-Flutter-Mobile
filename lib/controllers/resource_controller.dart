@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
 import '../models/message_model.dart';
 import '../models/sos_request_model.dart';
 import '../models/alert_model.dart';
@@ -14,7 +15,8 @@ class ResourceController extends ChangeNotifier {
   bool isMessagesLoading = false;
   bool isContactsLoading = false;
   bool isAlertsLoading = false;
-  List<MessageModel> messages = [];
+  List<MessageModel> inboxMessages = [];
+  List<MessageModel> chatMessages = [];
   List<SosRequestModel> sosRequests = [];
   List<AlertModel> alerts = [];
   List<int> seenAlertIds = [];
@@ -83,40 +85,58 @@ class ResourceController extends ChangeNotifier {
   }
 
   // SOS Submission
-  Future<bool> submitSOS({
+  Future<String?> submitSOS({
     required String requestType,
     required String subject,
     required String message,
+    double? latitude,
+    double? longitude,
   }) async {
+    final user = authController.currentUser;
+    if (user == null) return "User session not found. Please log in again.";
+    
     isSOSLoading = true;
     notifyListeners();
-
+    
     try {
-      final user = authController.currentUser;
-      if (user == null) return false;
-      
+      // 1. Fetch Location if not provided
+      Position? position;
+      if (latitude == null || longitude == null) {
+        try {
+          position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high,
+            timeLimit: const Duration(seconds: 5),
+          );
+        } catch (e) {
+          debugPrint('LOCATION FETCH ERROR FOR SOS: $e');
+        }
+      }
+
       final response = await http.post(
         Uri.parse('$baseUrl/sos/submit_request.php'),
+        headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'user_id': user.userId,
           'request_type': requestType,
           'subject': subject,
           'message': message,
+          'latitude': latitude ?? position?.latitude,
+          'longitude': longitude ?? position?.longitude,
         }),
       );
 
+      final data = jsonDecode(response.body);
       if (response.statusCode == 201 || response.statusCode == 200) {
         await fetchSosRequests(); // refresh history immediately
-        return true;
+        return null; // success
       }
-      return false;
+      return data['message'] ?? 'Failed to submit SOS request';
     } catch (e) {
-      debugPrint('SOS SUBMIT ERROR: $e');
+      return "Network error: $e";
     } finally {
       isSOSLoading = false;
       notifyListeners();
     }
-    return false;
   }
 
   // Fetch SOS History
@@ -205,9 +225,15 @@ class ResourceController extends ChangeNotifier {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['success'] == true && data['messages'] != null) {
-          messages = (data['messages'] as List)
+          final fetched = (data['messages'] as List)
               .map((m) => MessageModel.fromJson(m))
               .toList();
+          
+          if (otherUserId != null) {
+            chatMessages = fetched;
+          } else {
+            inboxMessages = fetched;
+          }
         }
       }
     } catch (e) {
@@ -334,9 +360,10 @@ class ResourceController extends ChangeNotifier {
         }),
       );
       if (response.statusCode == 200) {
-        messages.removeWhere((m) =>
+        inboxMessages.removeWhere((m) =>
             (m.senderId == user.userId && m.receiverId == otherUserId) ||
             (m.senderId == otherUserId && m.receiverId == user.userId));
+        chatMessages.clear(); // If we delete the conversation we are viewing
         notifyListeners();
         return true;
       }
@@ -344,6 +371,45 @@ class ResourceController extends ChangeNotifier {
       debugPrint('DELETE CONVERSATION ERROR: $e');
     }
     return false;
+  }
+
+  // Mark Read
+  Future<void> markAsRead(int otherUserId, {String otherUserType = 'user'}) async {
+    final user = authController.currentUser;
+    if (user == null) return;
+
+    try {
+      // Local update first for responsiveness
+      bool changed = false;
+      // Update both lists
+      for (int i = 0; i < inboxMessages.length; i++) {
+        var m = inboxMessages[i];
+        if (m.senderId == otherUserId && m.senderType == otherUserType && !m.isRead) {
+          inboxMessages[i] = m.copyWith(isRead: true);
+          changed = true;
+        }
+      }
+      for (int i = 0; i < chatMessages.length; i++) {
+        var m = chatMessages[i];
+        if (m.senderId == otherUserId && m.senderType == otherUserType && !m.isRead) {
+          chatMessages[i] = m.copyWith(isRead: true);
+          changed = true;
+        }
+      }
+      if (changed) notifyListeners();
+
+      // Backend update
+      await http.post(
+        Uri.parse('$baseUrl/messages/mark_read.php'),
+        body: jsonEncode({
+          'user_id': user.userId,
+          'other_user_id': otherUserId,
+          'other_user_type': otherUserType,
+        }),
+      );
+    } catch (e) {
+      debugPrint('MARK READ ERROR: $e');
+    }
   }
 }
 

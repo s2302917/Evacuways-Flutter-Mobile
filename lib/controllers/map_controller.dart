@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:geocoding/geocoding.dart';
 import '../models/center_model.dart';
 import '../models/vehicle_model.dart';
+import '../models/sos_request_model.dart';
 
 class AdminModel {
   final int id;
@@ -37,6 +38,7 @@ class MapController extends ChangeNotifier {
   List<CenterModel> centers = [];
   List<VehicleModel> vehicles = [];
   List<AdminModel> admins = [];
+  List<SosRequestModel> activeSos = [];
   bool isLoading = false;
   String currentLocationName = "Locating...";
 
@@ -100,6 +102,22 @@ class MapController extends ChangeNotifier {
         }
       } else {
         debugPrint('MAP FETCH HTTP ERROR: ${response.statusCode}');
+      }
+
+      // 3. Fetch Active SOS
+      try {
+        final sosRes = await http.get(Uri.parse('$baseUrl/sos/get_active_sos.php'));
+        if (sosRes.statusCode == 200) {
+          final sosData = jsonDecode(sosRes.body);
+          if (sosData['success'] == true) {
+            activeSos = (sosData['requests'] as List)
+                .map((s) => SosRequestModel.fromJson(s))
+                .toList();
+            debugPrint('MAP FETCH SOS SUCCESS: ${activeSos.length} active SOS found');
+          }
+        }
+      } catch (sosE) {
+        debugPrint('MAP FETCH SOS EXCEPTION: $sosE');
       }
     } catch (e) {
       debugPrint('MAP FETCH EXCEPTION: $e');

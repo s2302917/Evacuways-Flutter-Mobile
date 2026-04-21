@@ -49,7 +49,9 @@ class VehicleController {
                 $_POST['landmark'],
                 $_POST['status'],
                 $_POST['driver_name'],
-                $_POST['driver_contact']
+                $_POST['driver_contact'],
+                $_POST['latitude'] ?? null,
+                $_POST['longitude'] ?? null
             );
 
             // Automatically create a user account for the driver
@@ -73,7 +75,9 @@ class VehicleController {
                 $_POST['landmark'],
                 $_POST['status'],
                 $_POST['driver_name'],
-                $_POST['driver_contact']
+                $_POST['driver_contact'],
+                $_POST['latitude'] ?? null,
+                $_POST['longitude'] ?? null
             );
             $this->redirect('vehicles.php');
         }

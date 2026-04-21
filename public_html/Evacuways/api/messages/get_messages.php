@@ -22,8 +22,11 @@ if (!empty($user_id)) {
                       LEFT JOIN evacuways_admins a_s ON m.sender_id = a_s.admin_id AND m.sender_type = 'admin'
                       LEFT JOIN evacuways_users u_r ON m.receiver_id = u_r.user_id AND m.receiver_type = 'user'
                       LEFT JOIN evacuways_admins a_r ON m.receiver_id = a_r.admin_id AND m.receiver_type = 'admin'
-                      WHERE (m.sender_id = :user_id AND m.sender_type = 'user' AND m.receiver_id = :other_id AND m.receiver_type = :other_type)
-                      OR (m.sender_id = :other_id AND m.sender_type = :other_type AND m.receiver_id = :user_id AND m.receiver_type = 'user')
+                      WHERE (
+                          (m.sender_id = :user_id AND m.sender_type = 'user' AND m.receiver_id = :other_id AND m.receiver_type = :other_type AND m.deleted_by_sender = 0)
+                          OR 
+                          (m.sender_id = :other_id AND m.sender_type = :other_type AND m.receiver_id = :user_id AND m.receiver_type = 'user' AND m.deleted_by_receiver = 0)
+                      )
                       ORDER BY m.sent_at ASC";
             $stmt = $db->prepare($query);
             $stmt->bindParam(':user_id', $user_id);
@@ -39,8 +42,8 @@ if (!empty($user_id)) {
                       LEFT JOIN evacuways_admins a_s ON m.sender_id = a_s.admin_id AND m.sender_type = 'admin'
                       LEFT JOIN evacuways_users u_r ON m.receiver_id = u_r.user_id AND m.receiver_type = 'user'
                       LEFT JOIN evacuways_admins a_r ON m.receiver_id = a_r.admin_id AND m.receiver_type = 'admin'
-                      WHERE (m.sender_id = :user_id AND m.sender_type = 'user') 
-                         OR (m.receiver_id = :user_id AND m.receiver_type = 'user')
+                      WHERE (m.sender_id = :user_id AND m.sender_type = 'user' AND m.deleted_by_sender = 0) 
+                         OR (m.receiver_id = :user_id AND m.receiver_type = 'user' AND m.deleted_by_receiver = 0)
                       ORDER BY m.sent_at ASC";
             $stmt = $db->prepare($query);
             $stmt->bindParam(':user_id', $user_id);

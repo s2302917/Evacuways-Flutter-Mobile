@@ -18,6 +18,16 @@ $statusData = $centerController->getStatusStats();
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp" />
     <link rel="stylesheet" href="../../../public/css/style.css?v=<?php echo time(); ?>">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet Geocoder CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <style>
+        #map, #update_map { height: 300px; border-radius: 0.8rem; margin-top: 10px; border: 1px solid var(--color-light); }
+        .latlng-group { position: relative; }
+        .ping-btn { position: absolute; right: 10px; top: 35px; background: var(--color-primary); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 5px; z-index: 10; }
+        .ping-btn:hover { background: var(--color-primary-variant); }
+    </style>
 </head>
 <body>
 
@@ -39,6 +49,7 @@ $statusData = $centerController->getStatusStats();
             <a href="../vechicles/vehicles.php"><span class="material-symbols-sharp">airport_shuttle</span><h3>Evacuation Vehicles</h3></a>
             <a href="centers.php" class="active"><span class="material-symbols-sharp">location_city</span><h3>Evacuation Centers</h3></a>
             <a href="../families/families.php"><span class="material-symbols-sharp">groups</span><h3>Registered Families</h3></a>
+            <a href="../checklists/checklists.php"><span class="material-symbols-sharp">assignment_turned_in</span><h3>Safety Checklists</h3></a>
             <a href="../volunteers/volunteers.php"><span class="material-symbols-sharp">volunteer_activism</span><h3>Volunteers</h3></a>
             <a href="../messages/messages.php"><span class="material-symbols-sharp">mail</span><h3>Messages</h3></a>
             <a href="../settings/settings.php"><span class="material-symbols-sharp">settings</span><h3>Settings</h3></a>
@@ -90,7 +101,19 @@ $statusData = $centerController->getStatusStats();
                             <option value="" disabled selected>Loading Barangays...</option>
                         </select>
                     </div>
+                    <div class="input-box latlng-group">
+                        <p>Location Mapping</p>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" name="latitude" id="reg_lat" placeholder="Latitude" readonly required>
+                            <input type="text" name="longitude" id="reg_lng" placeholder="Longitude" readonly required>
+                        </div>
+                        <button type="button" class="ping-btn" onclick="pingLocation('reg')">
+                            <span class="material-symbols-sharp">my_location</span> Ping
+                        </button>
+                    </div>
                 </div>
+
+                <div id="map"></div>
 
                 <button type="submit" name="create_center" class="btn-submit">Add Center</button>
             </form>
@@ -142,7 +165,9 @@ $statusData = $centerController->getStatusStats();
                                     '<?= htmlspecialchars(addslashes($center['barangay_name'])) ?>', 
                                     '<?= $center['status'] ?>',
                                     '<?= htmlspecialchars(addslashes($center['contact_person'] ?? '')) ?>',
-                                    '<?= htmlspecialchars(addslashes($center['contact_number'] ?? '')) ?>'
+                                    '<?= htmlspecialchars(addslashes($center['contact_number'] ?? '')) ?>',
+                                    '<?= $center['latitude'] ?>',
+                                    '<?= $center['longitude'] ?>'
                                 )">
                                     <span class="material-symbols-sharp">edit</span>
                                 </button>
@@ -227,14 +252,26 @@ $statusData = $centerController->getStatusStats();
                 </div>
             </div>
             
-            <div class="grid-1-col">
+            <div class="grid-2-col">
                 <div class="input-box">
                     <p>Barangay</p>
                     <select name="barangay_name" id="update_barangay" required>
                         <option value="" disabled selected>Loading Barangays...</option>
                     </select>
                 </div>
+                <div class="input-box latlng-group">
+                    <p>Location Mapping</p>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" name="latitude" id="update_lat" placeholder="Latitude" readonly required>
+                        <input type="text" name="longitude" id="update_lng" placeholder="Longitude" readonly required>
+                    </div>
+                    <button type="button" class="ping-btn" onclick="pingLocation('update')">
+                        <span class="material-symbols-sharp">my_location</span> Ping
+                    </button>
+                </div>
             </div>
+
+            <div id="update_map"></div>
             
             <button type="submit" name="update_center" class="btn-submit" style="margin-top: 15px;">Save Changes</button>
             <button type="button" class="btn-submit btn-cancel" onclick="closeEditModal()">Cancel</button>
@@ -243,6 +280,10 @@ $statusData = $centerController->getStatusStats();
 </div>
 
 <script src="../../../public/js/script.js"></script>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet Geocoder JS -->
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 <script>
     // JS LOCATION HANDLER
@@ -280,21 +321,124 @@ $statusData = $centerController->getStatusStats();
             });
     });
 
-    // Edit Modal Logic (Updated parameters to remove landmark)
-    function openEditModal(id, centerName, capacity, barangayName, status, contactPerson, contactNumber) {
+    // --- MAP INTEGRATION ---
+    let regMap, updateMap;
+    let regMarker, updateMarker;
+
+    function initMap(mapId, latId, lngId, initialLat, initialLng) {
+        const defaultLat = initialLat || 10.6765; // Bacolod City default
+        const defaultLng = initialLng || 122.9509;
+        
+        const map = L.map(mapId).setView([defaultLat, defaultLng], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
+
+        // Geocoder Search
+        const geocoder = L.Control.geocoder({
+            defaultMarkGeocode: false
+        }).on('markgeocode', function(e) {
+            const bbox = e.geocode.bbox;
+            const poly = L.polygon([
+                bbox.getSouthEast(),
+                bbox.getNorthEast(),
+                bbox.getNorthWest(),
+                bbox.getSouthWest()
+            ]);
+            map.fitBounds(poly.getBounds());
+            marker.setLatLng(e.geocode.center);
+            updateInputs(e.geocode.center.lat, e.geocode.center.lng);
+        }).addTo(map);
+
+        function updateInputs(lat, lng) {
+            document.getElementById(latId).value = lat.toFixed(7);
+            document.getElementById(lngId).value = lng.toFixed(7);
+        }
+
+        marker.on('dragend', function(e) {
+            const position = marker.getLatLng();
+            updateInputs(position.lat, position.lng);
+        });
+
+        map.on('click', function(e) {
+            marker.setLatLng(e.latlng);
+            updateInputs(e.latlng.lat, e.latlng.lng);
+        });
+
+        // Initial fill if not editing
+        if (!initialLat) {
+            updateInputs(defaultLat, defaultLng);
+        }
+
+        return { map, marker };
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const regObj = initMap('map', 'reg_lat', 'reg_lng');
+        regMap = regObj.map;
+        regMarker = regObj.marker;
+    });
+
+    function pingLocation(type) {
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser.");
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition((position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            
+            if (type === 'reg') {
+                regMarker.setLatLng([lat, lng]);
+                regMap.setView([lat, lng], 16);
+                document.getElementById('reg_lat').value = lat.toFixed(7);
+                document.getElementById('reg_lng').value = lng.toFixed(7);
+            } else {
+                updateMarker.setLatLng([lat, lng]);
+                updateMap.setView([lat, lng], 16);
+                document.getElementById('update_lat').value = lat.toFixed(7);
+                document.getElementById('update_lng').value = lng.toFixed(7);
+            }
+        }, (error) => {
+            alert("Unable to retrieve your location. Please ensure location services are enabled.");
+        });
+    }
+
+    // Edit Modal Logic (Updated parameters)
+    function openEditModal(id, centerName, capacity, barangayName, status, contactPerson, contactNumber, lat, lng) {
         document.getElementById('update_center_id').value = id;
         document.getElementById('update_name').value = centerName;
         document.getElementById('update_capacity').value = capacity;
         document.getElementById('update_status').value = status;
         document.getElementById('update_contact_person').value = contactPerson;
         document.getElementById('update_contact_number').value = contactNumber;
+        document.getElementById('update_lat').value = lat;
+        document.getElementById('update_lng').value = lng;
         
-        // Timeout ensures the JS API fetch has time to load options before setting the value
         setTimeout(() => {
             document.getElementById('update_barangay').value = barangayName;
         }, 500);
         
         document.getElementById('updateModal').style.display = 'flex';
+
+        // Initialize or Update Edit Map
+        if (!updateMap) {
+            const updateObj = initMap('update_map', 'update_lat', 'update_lng', parseFloat(lat), parseFloat(lng));
+            updateMap = updateObj.map;
+            updateMarker = updateObj.marker;
+        } else {
+            const newPos = [parseFloat(lat), parseFloat(lng)];
+            updateMarker.setLatLng(newPos);
+            updateMap.setView(newPos, 16);
+        }
+        
+        // Fix for Leaflet maps in modals
+        setTimeout(() => {
+            updateMap.invalidateSize();
+        }, 300);
     }
 
     function closeEditModal() {

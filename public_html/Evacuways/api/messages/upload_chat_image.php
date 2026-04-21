@@ -16,6 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
     $check = getimagesize($_FILES["image"]["tmp_name"]);
     if($check !== false) {
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            // Set file permissions to ensure web accessibility (resolves 403 Forbidden / "corruption" issues)
+            chmod($target_file, 0644);
+
+            header('Content-Type: application/json');
             echo json_encode([
                 "success" => true,
                 "message" => "The file " . htmlspecialchars($file_name) . " has been uploaded.",
